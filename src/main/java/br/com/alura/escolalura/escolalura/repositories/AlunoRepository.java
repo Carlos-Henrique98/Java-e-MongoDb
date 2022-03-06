@@ -45,7 +45,13 @@ public class AlunoRepository {
 		criarConexao();
 
 		MongoCollection<Aluno> alunos = this.bancoDeDados.getCollection("alunos", Aluno.class);
-		alunos.insertOne(aluno);
+
+		if (aluno.getId() == null) {
+			alunos.insertOne(aluno);
+		} else {
+			alunos.updateOne(Filters.eq("_id", aluno.getId()), new Document("$set", aluno));
+		}
+
 		cliente.close();
 	}
 
@@ -72,5 +78,5 @@ public class AlunoRepository {
 		Aluno aluno = alunos.find(Filters.eq("_id", new ObjectId(id))).first();
 		return aluno;
 	}
-	
+
 }

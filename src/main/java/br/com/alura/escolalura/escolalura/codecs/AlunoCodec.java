@@ -1,6 +1,8 @@
 package br.com.alura.escolalura.escolalura.codecs;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.bson.BsonReader;
 import org.bson.BsonString;
@@ -15,6 +17,7 @@ import org.bson.types.ObjectId;
 
 import br.com.alura.escolalura.escolalura.models.Aluno;
 import br.com.alura.escolalura.escolalura.models.Curso;
+import br.com.alura.escolalura.escolalura.models.Habilidade;
 
 public class AlunoCodec implements CollectibleCodec<Aluno> {
 
@@ -30,12 +33,22 @@ public class AlunoCodec implements CollectibleCodec<Aluno> {
 		String nome = aluno.getNome();
 		Date dataNascimento = aluno.getDataNascimento();
 		Curso curso = aluno.getCurso();
+		List<Habilidade> habilidades = aluno.getHabilidades();
 
 		Document documento = new Document();
 		documento.put("_id", id);
 		documento.put("nome", nome);
 		documento.put("data_nascimento", dataNascimento);
 		documento.put("curso", new Document("nome", curso.getNome()));
+
+		if (habilidades != null) {
+			List<Document> habilidadesDocument = new ArrayList<>();
+			for (Habilidade habilidade : habilidades) {
+				habilidadesDocument
+						.add(new Document("nome", habilidade.getNome()).append("nivel", habilidade.getNivel()));
+			}
+			documento.put("habilidades", habilidadesDocument);
+		}
 
 		codec.encode(writer, documento, encoder);
 	}
