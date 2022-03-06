@@ -6,17 +6,17 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 public class Aluno {
-	
+
 	private ObjectId id;
-	
+
 	private String nome;
-	
+
 	private Date dataNascimento;
-	
+
 	private Curso curso;
-	
+
 	private List<Nota> notas;
-	
+
 	private List<Habilidade> habilidades;
 
 	public ObjectId getId() {
@@ -66,5 +66,10 @@ public class Aluno {
 	public void setHabilidades(List<Habilidade> habilidades) {
 		this.habilidades = habilidades;
 	}
-	
+
+	public Aluno criarId() {
+		setId(new ObjectId());
+		return this;
+	}
+
 }
