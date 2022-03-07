@@ -18,6 +18,7 @@ import org.bson.types.ObjectId;
 import br.com.alura.escolalura.escolalura.models.Aluno;
 import br.com.alura.escolalura.escolalura.models.Curso;
 import br.com.alura.escolalura.escolalura.models.Habilidade;
+import br.com.alura.escolalura.escolalura.models.Nota;
 
 public class AlunoCodec implements CollectibleCodec<Aluno> {
 
@@ -40,14 +41,14 @@ public class AlunoCodec implements CollectibleCodec<Aluno> {
 		documento.put("nome", nome);
 		documento.put("data_nascimento", dataNascimento);
 		documento.put("curso", new Document("nome", curso.getNome()));
+		List<Nota> notas = aluno.getNotas();
 
-		if (habilidades != null) {
-			List<Document> habilidadesDocument = new ArrayList<>();
-			for (Habilidade habilidade : habilidades) {
-				habilidadesDocument
-						.add(new Document("nome", habilidade.getNome()).append("nivel", habilidade.getNivel()));
+		if (notas != null) {
+			List<Double> notasParaSalvar = new ArrayList<>();
+			for (Nota nota : notas) {
+				notasParaSalvar.add(nota.getValor());
 			}
-			documento.put("habilidades", habilidadesDocument);
+			documento.put("notas", notasParaSalvar);
 		}
 
 		codec.encode(writer, documento, encoder);
@@ -71,6 +72,27 @@ public class AlunoCodec implements CollectibleCodec<Aluno> {
 		if (curso != null) {
 			String nomeCurso = curso.getString("nome");
 			aluno.setCurso(new Curso(nomeCurso));
+		}
+
+		List<Double> notas = (List<Double>) document.get("notas");
+
+		if (notas != null) {
+			List<Nota> notasDoAluno = new ArrayList<>();
+			for (Double nota : notas) {
+				notasDoAluno.add(new Nota(nota));
+			}
+			aluno.setNotas(notasDoAluno);
+		}
+
+		List<Document> habilidades = (List<Document>) document.get("habilidades");
+		
+		if (habilidades != null) {
+			List<Habilidade> habilidadesDoAluno = new ArrayList<>();
+			for (Document documentHabilidade : habilidades) {
+				habilidadesDoAluno.add(
+						new Habilidade(documentHabilidade.getString("nome"), documentHabilidade.getString("nivel")));
+			}
+			aluno.setHabilidades(habilidadesDoAluno);
 		}
 
 		return aluno;
