@@ -18,7 +18,7 @@ public class HabilidadeController {
 	@Autowired
 	private AlunoRepository repository;
 
-	@GetMapping("habilidade/cadastrar/{id}")
+	@GetMapping("/habilidade/cadastrar/{id}")
 	public String cadastrar(@PathVariable String id, Model model) {
 		Aluno aluno = repository.obterAlunoPor(id);
 		model.addAttribute("aluno", aluno);
