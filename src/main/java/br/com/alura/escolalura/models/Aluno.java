@@ -1,4 +1,4 @@
-package br.com.alura.escolalura.escolalura.models;
+package br.com.alura.escolalura.models;
 
 import java.util.ArrayList;
 import java.util.Date;

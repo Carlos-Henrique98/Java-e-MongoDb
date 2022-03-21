@@ -1,4 +1,4 @@
-package br.com.alura.escolalura.escolalura.models;
+package br.com.alura.escolalura.models;
 
 public class Habilidade {
 

@@ -1,8 +1,9 @@
-package br.com.alura.escolalura.escolalura.controllers;
+package br.com.alura.escolalura.controllers;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +12,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.alura.escolalura.escolalura.models.Aluno;
 import br.com.alura.escolalura.escolalura.repositories.AlunoRepository;
+import br.com.alura.escolalura.models.Aluno;
+import br.com.alura.escolalura.service.GeolocalizaoService;
 
 @Controller
+@Component
 public class AlunoController {
 
 	@Autowired
 	private AlunoRepository repository;
+
+	@Autowired
+	private GeolocalizaoService geolocalizacaoService;
 
 	@GetMapping("/aluno/cadastrar")
 	public String cadastrar(Model model) {
@@ -29,6 +35,14 @@ public class AlunoController {
 	@PostMapping("/aluno/salvar")
 	public String salvar(@ModelAttribute Aluno aluno) {
 		System.out.println("Aluno para salvar: " + aluno);
+
+		try {
+			geolocalizacaoService.obterLatELongPor(aluno.getContato());
+		} catch (Exception e) {
+			System.out.println("Endereço não localizado");
+			e.printStackTrace();
+		}
+
 		repository.salvar(aluno);
 		return "redirect:/";
 	}

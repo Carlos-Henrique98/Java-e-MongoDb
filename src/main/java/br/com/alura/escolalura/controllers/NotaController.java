@@ -1,4 +1,4 @@
-package br.com.alura.escolalura.escolalura.controllers;
+package br.com.alura.escolalura.controllers;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.alura.escolalura.escolalura.models.Aluno;
-import br.com.alura.escolalura.escolalura.models.Nota;
 import br.com.alura.escolalura.escolalura.repositories.AlunoRepository;
+import br.com.alura.escolalura.models.Aluno;
+import br.com.alura.escolalura.models.Nota;
 
 @Controller
 public class NotaController {

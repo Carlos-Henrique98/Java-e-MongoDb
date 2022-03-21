@@ -1,4 +1,4 @@
-package br.com.alura.escolalura.escolalura.codecs;
+package br.com.alura.escolalura.codecs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,10 +15,11 @@ import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import org.bson.types.ObjectId;
 
-import br.com.alura.escolalura.escolalura.models.Aluno;
-import br.com.alura.escolalura.escolalura.models.Curso;
-import br.com.alura.escolalura.escolalura.models.Habilidade;
-import br.com.alura.escolalura.escolalura.models.Nota;
+import br.com.alura.escolalura.models.Aluno;
+import br.com.alura.escolalura.models.Contato;
+import br.com.alura.escolalura.models.Curso;
+import br.com.alura.escolalura.models.Habilidade;
+import br.com.alura.escolalura.models.Nota;
 
 public class AlunoCodec implements CollectibleCodec<Aluno> {
 
@@ -35,13 +36,14 @@ public class AlunoCodec implements CollectibleCodec<Aluno> {
 		Date dataNascimento = aluno.getDataNascimento();
 		Curso curso = aluno.getCurso();
 		List<Habilidade> habilidades = aluno.getHabilidades();
+		List<Nota> notas = aluno.getNotas();
+		Contato contato = aluno.getContato();
 
 		Document documento = new Document();
 		documento.put("_id", id);
 		documento.put("nome", nome);
 		documento.put("data_nascimento", dataNascimento);
 		documento.put("curso", new Document("nome", curso.getNome()));
-		List<Nota> notas = aluno.getNotas();
 
 		if (notas != null) {
 			List<Double> notasParaSalvar = new ArrayList<>();
@@ -50,6 +52,14 @@ public class AlunoCodec implements CollectibleCodec<Aluno> {
 			}
 			documento.put("notas", notasParaSalvar);
 		}
+
+		List<Double> coordinates = new ArrayList<Double>();
+		for (Double location : contato.getCoordinates()) {
+			coordinates.add(location);
+		}
+
+		documento.put("contato", new Document().append("endereco", contato.getEndereco())
+				.append("coordinates", coordinates).append("type", contato.getType()));
 
 		codec.encode(writer, documento, encoder);
 	}
@@ -85,7 +95,7 @@ public class AlunoCodec implements CollectibleCodec<Aluno> {
 		}
 
 		List<Document> habilidades = (List<Document>) document.get("habilidades");
-		
+
 		if (habilidades != null) {
 			List<Habilidade> habilidadesDoAluno = new ArrayList<>();
 			for (Document documentHabilidade : habilidades) {

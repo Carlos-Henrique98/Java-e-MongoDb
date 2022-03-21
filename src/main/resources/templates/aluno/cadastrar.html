@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
   <meta charset="UTF-8" />
   <link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css" media="screen,projection" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <title>EscolAlura</title>
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="../js/inicializar.js"></script>
+  <script type="text/javascript" src="../materialize/js/inicializar.js"></script>
+  <script type="text/javascript" src="../js/googlemaps.js"></script>
 </head>
 <body class="grey lighten-3">
   <div id="formularioEdicao" class="container">
@@ -33,6 +34,13 @@
               <label for="curso">Curso</label>
             </div>
           </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="endereco" type="text" class="validate" th:field="*{contato.endereco}"  />
+              <label for="endereco">Endereço</label>
+            </div>
+          </div>
+
 
         </div> <!-- Fim SECTION Dados Basicos -->
 
@@ -41,18 +49,11 @@
             <button class="btn waves-effect waves-light" type="submit" name="action">Salvar Aluno</button>
           </div>
         </div>
-        
-        <div class="row">
-            <div class="input-field col s12">
-              <input id="endereco" type="text" class="validate" th:field="*{contato.endereco}"  />
-              <label for="curso">Endereco</label>
-            </div>
-          </div>
       </form>
     </div>
 
   </div> <!-- Fim do formulario de edicao -->
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA03zKo_Ey2LXS6y9SS12t9Fq4ZIA29lOk&amp;libraries=places&amp;callback=autoComplete" async="async" defer="defer"></script>
   <script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
 </body>
 </html>
